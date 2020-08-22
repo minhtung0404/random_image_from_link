@@ -1,0 +1,22 @@
+{
+  "name": "random_image_from_link",
+  "version": "1.0.0",
+  "description": "## Description This project is used to show a random image in your chosen folders",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/minhtung0404/random_image_from_link.git"
+  },
+  "author": "minhtung0404",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/minhtung0404/random_image_from_link/issues"
+  },
+  "homepage": "https://github.com/minhtung0404/random_image_from_link#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
