@@ -1,35 +1,25 @@
 var fs = require('fs');
 var express = require('express');
 var app = express();
-var { Path } = require('./config.json');
-var { URLlist } = require(Path);
 
-let Data, images = URLlist;
+var imagejs = require('./routes/image.js');
+var videojs = require('./routes/video.js');
+var mangajs = require('./routes/manga.js');
 
-fs.readFile('index.html', 'utf8', (err, data) => {
+app.use('/', express.static('/'));
+app.use('/image', imagejs);
+app.use('/video', videojs);
+app.use('/manga', mangajs);
+
+var html;
+
+fs.readFile('./html/index.html', 'utf8', (err, data) => {
     if (err) throw err;
-    Data = data;
+    html = data;
 });
 
-function addZero(index, length){
-    length = length.toString().length;
-    index = index.toString();
-    while (index.length < length){
-        index = '0' + index;
-    }
-    return index;
-}
-
 app.get('/', function(req, res){
-    if (images.length == 0) {
-        res.write("Cannot find any images");
-        res.end();
-        return;
-    }
-    let index = Math.floor(Math.random() * images.length);
-    image = Data.replace(/\[nani\]/g, images[index]);
-    res.write(image);
-    console.log('(' + addZero(index + 1, images.length) + '/' + images.length + ') ' + images[index])
+    res.send(html);
     res.end();
 });
 
