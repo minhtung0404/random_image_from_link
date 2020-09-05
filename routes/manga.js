@@ -2,7 +2,8 @@ var fs = require('fs');
 var express = require('express');
 var router = express.Router();
 
-var { Path } = require('../config.json');
+var {pixiv, deleteFolderRecursive, getpath} = require('../modules/pixiv.js');
+var { Path, download_path } = require('../config.json');
 var { URLlist } = require(Path);
 var addZero = require('../modules/addzero.js');
 
@@ -26,14 +27,16 @@ fs.readFile('./html/notfound.html', 'utf8', (err, data) => {
     notfound = data;
 });
 
-function getHTML(value){
+async function getHTML(value){
     let images = [], Data = '';
 
-    value.forEach(function(manga_page){
-        Data += page.replace(/\[nani\]/g, manga_page);
-    });
+    for (let i = 0; i < value.length; i++){
+        manga_page = value[i];
+        await pixiv(manga_page);
+        Data += page.replace(/\[nani\]/g, getpath(manga_page));
+    }
 
-    return html.replace(/\[Data\]/g, Data);
+    return Data;
 }
 
 router.get('/', function(req, res){
@@ -46,9 +49,11 @@ router.get('/', function(req, res){
 
     console.log();
 
-    res.send(getHTML(files[index]));
+    getHTML(files[index]).then(function(Data){
+        res.send(html.replace(/\[Data\]/g, Data));
+    });
 
-    console.log('/manga (' + addZero(index + 1, files.length) + '/' + files.length + ') ' + files[index]);
+    console.log('/manga (' + addZero(index + 1, files.length) + '/' + files.length + ') ');
 });
 
 module.exports = router;
