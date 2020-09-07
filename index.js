@@ -3,12 +3,12 @@ var express = require('express');
 var app = express();
 
 var imagejs = require('./routes/image.js');
-var videojs = require('./routes/video.js');
+// var videojs = require('./routes/video.js');
 var mangajs = require('./routes/manga.js');
 
 app.use('/', express.static('/'));
 app.use('/image', imagejs);
-app.use('/video', videojs);
+// app.use('/video', videojs);
 app.use('/manga', mangajs);
 
 var html;
